@@ -1,10 +1,15 @@
 from flask import Flask, render_template, redirect, url_for
+from mongoframes import *
 from pymongo import MongoClient
 from models.account import Account
 from models.note import Note
 from models.user import User
+from models.notification import Notification
 from dotenv import load_dotenv
+from datetime import datetime, date, timedelta
+import datetime
 import os
+import uuid
 
 
 load_dotenv('.env')
@@ -18,6 +23,7 @@ Frame._client = MongoClient(app.config['MONGO_URI'])
 def index():
     pass
 
+
 @app.route('/sign-up')
 def signup():
     pass
@@ -28,6 +34,10 @@ def signin():
 
 @app.route('/sign-out')
 def signout():
+    pass
+
+@app.route('/settings')
+def settings():
     pass
 
 @app.route('/password-generator')

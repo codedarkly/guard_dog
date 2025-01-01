@@ -6,5 +6,7 @@ class Note(SubFrame):
         'id',
         'title',
         'category',
-        'note'
+        'note',
+        'priority',
+        'date_added'
     }

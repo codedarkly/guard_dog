@@ -5,7 +5,8 @@ class User(Frame):
     _fields = {
         'name',
         'email',
-        'password',
+        'password'
+        'date_added',
         'accounts',
         'notes'
     }
