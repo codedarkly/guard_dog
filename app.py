@@ -20,6 +20,14 @@ load_dotenv('.env')
 app = Flask(__name__)
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
 app.config['REDIS_URL'] =os.environ.get('REDIS_URL')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+app.config['MAIL_PORT'] = os.environ.get('MAIL_PORT')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_TEST_RECIPIENT'] = os.environ.get('MAIL_TEST_RECIPIENT')
+app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL')
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS')
 Frame._client = MongoClient(app.config['MONGO_URI'])
 redis_client = FlaskRedis(app)
 
@@ -43,10 +51,6 @@ def signout():
 
 @app.route('/settings')
 def settings():
-    pass
-
-@app.route('/history')
-def history():
     pass
 
 @app.route('/password-generator')

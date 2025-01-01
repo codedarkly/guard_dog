@@ -21,3 +21,18 @@ class Account(SubFrame):
     def save_due_date(self, bill_date):
         #add 30 to the date given: bill_date + timedelta(days=30)
         pass
+
+    def add_account():
+        pass
+
+    def remove_account():
+        pass
+
+    def update_account():
+        pass
+
+    def retrieve_account():
+        pass
+
+    def retrieve_accounts():
+        pass
