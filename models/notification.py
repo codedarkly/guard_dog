@@ -8,5 +8,9 @@ class Notification(SubFrame):
         'frequency'
     }
 
-    def save_notification_date(self, notification_date):
+    def schedule_notification(self, notification_date):
+        #set notification date and frequency
+        pass
+
+    def update_notification():
         pass

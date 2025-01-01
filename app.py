@@ -45,6 +45,10 @@ def signout():
 def settings():
     pass
 
+@app.route('/history')
+def history():
+    pass
+
 @app.route('/password-generator')
 def password_generator():
     pass
