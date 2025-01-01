@@ -10,3 +10,18 @@ class Note(SubFrame):
         'priority',
         'date_added'
     }
+
+    def add_note():
+        pass
+
+    def remove_note():
+        pass
+
+    def retrieve_note():
+        pass
+
+    def retrieve_notes():
+        pass
+
+    def edit_note():
+        pass

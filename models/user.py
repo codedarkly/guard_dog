@@ -38,6 +38,9 @@ class User(Frame):
     def email_verification_code():
         pass
 
+    def register_user():
+        pass
+
     def update_user_account():
        pass
 
