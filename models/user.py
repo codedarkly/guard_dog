@@ -1,5 +1,8 @@
 from mongoframes import *
 from datetime import datetime
+import random
+import string
+
 
 class User(Frame):
     _fields = {
@@ -50,7 +53,6 @@ class User(Frame):
     def deactivate_account():
         pass
 
-
-
-
-#Redis configuration, imported smtplib and added method stubs for User class
+    @staticmethod
+    def generate_password(length):
+        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
