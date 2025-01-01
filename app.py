@@ -10,13 +10,18 @@ from datetime import datetime, date, timedelta
 import datetime
 import os
 import uuid
+from flask_redis import FlaskRedis
+import smtplib
+from email.message import EmailMessage
 
 
 load_dotenv('.env')
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
+app.config['REDIS_URL'] =os.environ.get('REDIS_URL')
 Frame._client = MongoClient(app.config['MONGO_URI'])
+redis_client = FlaskRedis(app)
 
 
 @app.route('/')
