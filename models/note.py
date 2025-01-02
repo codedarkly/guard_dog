@@ -26,8 +26,11 @@ class Note(SubFrame):
         except (IndexError, TypeError):
             return 'Note does not exist', 404
 
-    def retrieve_note():
-        pass
+    def retrieve_note(user, note_id):
+        try:
+            return [note for note in user['notes'] if note_id in note['id']][0]
+        except (IndexError, TypeError):
+            return 'Note does not exist', 404
 
     def retrieve_notes():
         pass
