@@ -11,8 +11,10 @@ class Note(SubFrame):
         'date_added'
     }
 
-    def add_note():
-        pass
+    def add_note(user, note):
+        user.notes.append(note)
+        user.update()
+        return 'Note added', 200
 
     def remove_note():
         pass
