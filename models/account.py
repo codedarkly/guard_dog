@@ -22,8 +22,10 @@ class Account(SubFrame):
         #add 30 to the date given: bill_date + timedelta(days=30)
         pass
 
-    def add_account():
-        pass
+    @staticmethod
+    def add_account(data):
+        data.update()
+        return 'Account added', 200
 
     def remove_account():
         pass
