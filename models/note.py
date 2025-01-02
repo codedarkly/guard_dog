@@ -16,8 +16,15 @@ class Note(SubFrame):
         user.update()
         return 'Note added', 200
 
-    def remove_note():
-        pass
+    def remove_note(user, note_id):
+        try:
+           result = [(key,note) for key, note in enumerate(user['notes']) if note_id in note['id']]
+           id = int([item[0] for item in result][0])
+           del user.notes[id]
+           user.update()
+           return 'Note removed', 200
+        except (IndexError, TypeError):
+            return 'Note does not exist', 404
 
     def retrieve_note():
         pass
