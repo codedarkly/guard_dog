@@ -11,15 +11,13 @@ import datetime
 import os
 import uuid
 from flask_redis import FlaskRedis
-import smtplib
-from email.message import EmailMessage
 
 
 load_dotenv('.env')
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
-app.config['REDIS_URL'] =os.environ.get('REDIS_URL')
+app.config['REDIS_URL'] = os.environ.get('REDIS_URL')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
 app.config['MAIL_PORT'] = os.environ.get('MAIL_PORT')

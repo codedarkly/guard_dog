@@ -1,8 +1,9 @@
 from mongoframes import *
 from datetime import datetime
 import random
-import string
 import re
+import smtplib
+from email.message import EmailMessage
 from passlib.hash import pbkdf2_sha256
 
 class User(Frame):
@@ -23,7 +24,6 @@ class User(Frame):
     @staticmethod
     def validate_name(name):
         return name if re.match('^[a-zA-Z\s]+$', name) else 'Name is invalid', 401
-
 
     def check_user_account():
         pass
@@ -55,8 +55,21 @@ class User(Frame):
         except KeyError:
             return 'Verification code or username is incorrect or your passcode has expired', 401
 
-    def email_verification_code():
-        pass
+    @staticmethod
+    def send_verification_code(**mail_settings):
+        message = EmailMessage()
+        message['to'] = mail_settings['email']
+        message['from'] = mail_settings['sender']
+        message['subject'] = 'testing....'
+        message.set_content(mail_settings['template'], subtype='html')
+        with smtplib.SMTP_SSL(mail_settings['server'], mail_settings['port']) as smtp:
+            smtp.login(mail_settings['sender'], mail_settings['password'])
+            smtp.send_message(message)
+        return 'message sent', 200
+
+
+
+
 
     def register_user():
         pass
@@ -72,4 +85,5 @@ class User(Frame):
 
     @staticmethod
     def generate_password(length):
-        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+        characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-&'
+        return ''.join(random.choice(characters) for _ in range(length))
