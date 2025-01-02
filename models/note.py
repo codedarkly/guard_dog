@@ -32,8 +32,11 @@ class Note(SubFrame):
         except (IndexError, TypeError):
             return 'Note does not exist', 404
 
-    def retrieve_notes():
-        pass
+    def retrieve_notes(user):
+        try:
+            return user.notes
+        except AttributeError:
+            return 'User has no notes', 404
 
     def edit_note():
         pass
