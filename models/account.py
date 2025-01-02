@@ -22,19 +22,18 @@ class Account(SubFrame):
         #add 30 to the date given: bill_date + timedelta(days=30)
         pass
 
-    @staticmethod
-    def add_account(data):
+    def update_account(data):
         data.update()
-        return 'Account added', 200
+        return 'Account updated', 200
 
-    def remove_account():
-        pass
+    def retrieve_account(user, id):
+        try:
+           return [account for account in user.accounts if id in account['id']]
+        except AttributeError:
+           return 'Account does not exist',404
 
-    def update_account():
-        pass
-
-    def retrieve_account():
-        pass
-
-    def retrieve_accounts():
-        pass
+    def retrieve_accounts(user):
+        try:
+            return user.accounts
+        except AttributeError:
+            return 'No accounts', 404
