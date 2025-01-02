@@ -38,5 +38,12 @@ class Note(SubFrame):
         except AttributeError:
             return 'User has no notes', 404
 
-    def edit_note():
-        pass
+    def edit_note(user, data, note_id):
+        note =  [note for note in user['notes'] if note_id in note['id']]
+        if len(note) > 0:
+            field = data[0]
+            note[0][field] = data[1]
+            user.update()
+            return 'Note updated', 200
+        else:
+            return 'Note does not exist', 404
