@@ -32,8 +32,7 @@ redis_client = FlaskRedis(app)
 
 @app.route('/')
 def index():
-   pass
-
+    pass
 
 @app.route('/sign-up')
 def signup():

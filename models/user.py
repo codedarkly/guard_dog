@@ -10,9 +10,9 @@ class User(Frame):
     _fields = {
         'name',
         'email',
-        'password'
+        'password',
         'date_added',
-        'status'
+        'status',
         'accounts',
         'notes'
     }
@@ -73,12 +73,18 @@ class User(Frame):
             smtp.send_message(message)
         return 'message sent', 200
 
+    @staticmethod
+    def update_user_account(user):
+        user.update()
+        return 'User account updated',204
 
-    def update_user_account():
-       pass
-
-    def retrieve_user_account():
-       pass
+    @staticmethod
+    def retrieve_user_account(user):
+        try:
+            u = User.one({'email' : user.email, 'password' : user.password})
+            return u, 200
+        except AttributeError:
+            return 'User does not exist', 404
 
     def deactivate_account():
         pass
