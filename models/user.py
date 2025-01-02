@@ -12,6 +12,7 @@ class User(Frame):
         'email',
         'password'
         'date_added',
+        'status'
         'accounts',
         'notes'
     }
@@ -25,8 +26,13 @@ class User(Frame):
     def validate_name(name):
         return name if re.match('^[a-zA-Z\s]+$', name) else 'Name is invalid', 401
 
-    def check_user_account():
-        pass
+    @staticmethod
+    def register_account(user):
+        if result :=  User.one(Q.email == user.email):
+           return 'User exists', 409
+        else:
+           user.insert()
+           return 'User registered', 200
 
     def hash_password(self, password):
         return pbkdf2_sha256.hash(password)
@@ -67,12 +73,6 @@ class User(Frame):
             smtp.send_message(message)
         return 'message sent', 200
 
-
-
-
-
-    def register_user():
-        pass
 
     def update_user_account():
        pass
