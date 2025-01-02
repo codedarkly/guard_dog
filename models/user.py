@@ -86,8 +86,14 @@ class User(Frame):
         except AttributeError:
             return 'User does not exist', 404
 
-    def deactivate_account():
-        pass
+    def deactivate_account(user):
+        try:
+           u = User.one({'email' : user.email, 'password' : user.password})
+           u.status = 'inactive'
+           u.update()
+           return 'User account deactivated', 404
+        except AttributeError:
+           return 'User does not exist', 404
 
     @staticmethod
     def generate_password(length):
