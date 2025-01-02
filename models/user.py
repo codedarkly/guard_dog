@@ -2,6 +2,7 @@ from mongoframes import *
 from datetime import datetime
 import random
 import string
+import re
 from passlib.hash import pbkdf2_sha256
 
 class User(Frame):
@@ -14,11 +15,15 @@ class User(Frame):
         'notes'
     }
 
-    def validate_email():
-        pass
+    @staticmethod
+    def validate_email(email):
+        email_pattern = re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email)
+        return email if email_pattern else 'E-mail address is not valid', 401
 
-    def validate_name():
-        pass
+    @staticmethod
+    def validate_name(name):
+        return name if re.match('^[a-zA-Z\s]+$', name) else 'Name is invalid', 401
+
 
     def check_user_account():
         pass
