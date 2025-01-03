@@ -17,6 +17,11 @@ class User(Frame):
         'notes'
     }
 
+
+    def is_user_signed_in():
+        #check to see if user still has a session(make this a decorator)
+        pass
+
     @staticmethod
     def validate_email(email):
         email_pattern = re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email)

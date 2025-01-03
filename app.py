@@ -33,7 +33,7 @@ scheduler = APScheduler()
 
 @app.route('/')
 def index():
-   pass
+   return render_template('home.html', title='Online Password Manager')
 
 @app.route('/sign-up')
 def signup():

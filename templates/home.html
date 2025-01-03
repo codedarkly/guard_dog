@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block content %}
+<div id="container">
+    <div class="left-column">
+        <header>
+            <img
+                src="{{ url_for('static', filename='images/logo.svg') }}"
+                alt="Logo image"
+            />
+            <h2>Guard Dog</h2>
+        </header>
+        <div id="features">
+            <h2>Online Password Manager</h2>
+            <p>Save passwords, account details and important notes</p>
+            <div class="features">
+                <img
+                    src="{{ url_for('static',filename='images/lock-solid.svg')}}"
+                    alt="Image of a lock"
+                />
+                <p>Secure passwords</p>
+            </div>
+            <div class="features">
+                <img
+                    src="{{ url_for('static',filename='images/notes.svg')}}"
+                    alt=""
+                />
+                <p>Save notes</p>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <main>
+            <form method="post">
+                <h2>Create an account today</h2>
+                <input
+                    type="text"
+                    name="name"
+                    pattern="^[a-zA-Z\s]$"
+                    maxlength="35"
+                    placeholder="Name"
+                    required
+                />
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="E-mail"
+                    pattern="^[a-z0-9_%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                    required
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                />
+                <input
+                    type="password"
+                    name="confirm-password"
+                    placeholder="Confirm password"
+                    required
+                />
+                <input type="button" name="signup" value="Sign up" />
+                <input type="button" name="signin" value="Sign in" />
+            </form>
+        </main>
+    </div>
+</div>
+{% endblock %}
