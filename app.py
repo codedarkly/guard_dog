@@ -11,7 +11,7 @@ import datetime
 import os
 import uuid
 from flask_redis import FlaskRedis
-
+from flask_apscheduler import APScheduler
 
 load_dotenv('.env')
 
@@ -26,13 +26,14 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_TEST_RECIPIENT'] = os.environ.get('MAIL_TEST_RECIPIENT')
 app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL')
 app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS')
+app.config['SCHEDULER_API_ENABLED'] = os.environ.get('SCHEDULER_API_ENABLED')
 Frame._client = MongoClient(app.config['MONGO_URI'])
 redis_client = FlaskRedis(app)
-
+scheduler = APScheduler()
 
 @app.route('/')
 def index():
-    pass
+   pass
 
 @app.route('/sign-up')
 def signup():
@@ -96,4 +97,6 @@ def delete_item(id):
 
 
 if __name__ == '__main__':
+    scheduler.init_app(app)
+    scheduler.start()
     app.run()

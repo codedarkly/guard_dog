@@ -18,10 +18,6 @@ class Account(SubFrame):
         'notifications'
     }
 
-    def save_due_date(self, bill_date):
-        #add 30 to the date given: bill_date + timedelta(days=30)
-        pass
-
     def update_account(data):
         data.update()
         return 'Account updated', 200
