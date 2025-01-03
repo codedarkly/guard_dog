@@ -33,15 +33,15 @@ scheduler = APScheduler()
 
 @app.route('/')
 def index():
-   return render_template('home.html', title='Online Password Manager')
+    return render_template('home.html', title='Online Password Manager')
 
 @app.route('/sign-up')
 def signup():
-    pass
+    return render_template('signup.html', title='Sign up')
 
 @app.route('/sign-in')
 def signin():
-    pass
+    return render_template('signin.html', title='Sign in')
 
 @app.route('/sign-out')
 def signout():

@@ -29,7 +29,7 @@
     </div>
     <div class="content">
         <main>
-            <form method="post">
+            <form method="post" action="/sign-up">
                 <h2>Create an account today</h2>
                 <input
                     type="text"
@@ -58,8 +58,20 @@
                     placeholder="Confirm password"
                     required
                 />
-                <input type="button" name="signup" value="Sign up" />
-                <input type="button" name="signin" value="Sign in" />
+                <button
+                    type="button"
+                    class="signup-button"
+                    formaction="/sign-up"
+                >
+                    Sign up
+                </button>
+                <button
+                    type="button"
+                    class="signin-button"
+                    formaction="/sign-in"
+                >
+                    Sign in"
+                </button>
             </form>
         </main>
     </div>
