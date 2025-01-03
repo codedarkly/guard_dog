@@ -1,0 +1,23 @@
+<div class="sidebar-menu">
+    <header>
+        <img
+            src="{{ url_for('static', filename='images/logo.svg') }}"
+            alt="Logo image"
+        />
+        <h2>Guard Dog</h2>
+    </header>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ url_for('account_manager') }}">Account Manager</a>
+            </li>
+            <li>
+                <a href="{{ url_for('password_generator') }}"
+                    >Password Generator</a
+                >
+            </li>
+            <li><a href="{{ url_for('notes') }}">Notes</a></li>
+            <li><a href="{{ url_for('settings') }}">Settings</a></li>
+        </ul>
+    </nav>
+</div>
