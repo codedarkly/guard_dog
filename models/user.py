@@ -9,6 +9,7 @@ from passlib.hash import pbkdf2_sha256
 class User(Frame):
     _fields = {
         'name',
+        'username',
         'email',
         'password',
         'date_added',
@@ -17,19 +18,32 @@ class User(Frame):
         'notes'
     }
 
+    def __init__(self, name, email, password, status):
+        self.name = name
+        self.email = email
+        self.password = password
+        self.status = status
 
-    def is_user_signed_in():
+
+    def is_user_signed_in(user_status):
         #check to see if user still has a session(make this a decorator)
+        #def wrapper():
+        #    if user_status
+        #return wrapper
         pass
+
+    @staticmethod
+    def validate_name(name):
+        return (name, 200) if re.match('^[a-zA-Z\s]+$', name) else ('Name is invalid', 401)
+
+    @staticmethod
+    def validate_username(username):
+        return (username, 200) if re.match('^[a-zA-Z0-9]+$', username) else ('Name is invalid', 401)
 
     @staticmethod
     def validate_email(email):
         email_pattern = re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email)
-        return email if email_pattern else 'E-mail address is not valid', 401
-
-    @staticmethod
-    def validate_name(name):
-        return name if re.match('^[a-zA-Z\s]+$', name) else 'Name is invalid', 401
+        return (email, 200) if email_pattern else ('E-mail address is not valid', 401)
 
     @staticmethod
     def register_account(user):
@@ -38,6 +52,10 @@ class User(Frame):
         else:
            user.insert()
            return 'User registered', 200
+
+    @staticmethod
+    def compare_passwords(password, confirm_password):
+        return (password, 200) if password == confirm_password else ('Passwords do not match', 401)
 
     def hash_password(self, password):
         return pbkdf2_sha256.hash(password)
@@ -83,13 +101,11 @@ class User(Frame):
         user.update()
         return 'User account updated',204
 
-    @staticmethod
-    def retrieve_user_account(user):
-        try:
-            u = User.one({'email' : user.email, 'password' : user.password})
-            return u, 200
-        except AttributeError:
-            return 'User does not exist', 404
+    def retrieve_user_account(self):
+        if _ := User.one({'email' : self.email, 'password' : self.password}):
+            return ('User exists', 200)
+        else:
+            return ('User does not exist', 404)
 
     def deactivate_account(user):
         try:

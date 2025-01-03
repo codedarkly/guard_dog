@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% include 'sidebar.html' %} {% block content %}
+<header>
+    <menu>
+        <li><a href="{{ url_for('signout') }}">Sign out</a></li>
+    </menu>
+</header>
+<main>
+    <div class="card">
+        <div id="accounts">
+            <h2>Accounts</h2>
+            < class="account-item">
+            <div class="item">
+                <p></p>
+                <sub></sub>
+            </div>
+            <menu>
+                <li><a href="">Update</a></li>
+                <li><a href="">Remove</a></li>
+            </menu>
+        </div>
+        <div class="add-item">
+            <a href="{{ url_for('add_note') }}">Add Item</a>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -29,50 +29,70 @@
     </div>
     <div class="content">
         <main>
-            <form method="post" action="/sign-up">
+            <form method="post">
                 <h2>Create an account today</h2>
                 <input
                     type="text"
                     name="name"
-                    pattern="^[a-zA-Z\s]$"
+                    pattern="[A-Za-z\s]{3,35}"
                     maxlength="35"
                     placeholder="Name"
+                    required
+                />
+                <input
+                    type="text"
+                    name="username"
+                    pattern="\w{3,35}"
+                    maxlength="35"
+                    placeholder="Username"
                     required
                 />
                 <input
                     type="email"
                     name="email"
                     placeholder="E-mail"
+                    maxlength="75"
                     pattern="^[a-z0-9_%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                     required
                 />
                 <input
                     type="password"
                     name="password"
+                    maxlength="16"
                     placeholder="Password"
                     required
                 />
                 <input
                     type="password"
                     name="confirm-password"
+                    maxlength="16"
                     placeholder="Confirm password"
                     required
                 />
                 <button
-                    type="button"
+                    type="submit"
                     class="signup-button"
-                    formaction="/sign-up"
+                    formaction="{{ url_for('index') }}"
                 >
                     Sign up
                 </button>
                 <button
-                    type="button"
+                    type="submit"
                     class="signin-button"
-                    formaction="/sign-in"
+                    formaction="{{ url_for('signin') }}"
                 >
-                    Sign in"
+                    Sign in
                 </button>
             </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+              <div class="flashes">
+                {% for category, message in messages %}
+                    <span class="flash-{{category}}">{{ message }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            {% endwith %}
         </main>
     </div>
 </div>
