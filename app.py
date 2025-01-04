@@ -13,6 +13,7 @@ import uuid
 from flask_redis import FlaskRedis
 from flask_apscheduler import APScheduler
 from flask_session import Session
+from threading import Thread
 
 load_dotenv('.env')
 
@@ -69,7 +70,7 @@ def index():
              flash(password_result[0], 'error')
         elif user_response.status_code == 404:
              user_id = session.sid
-             User.store_verification_code(redis_client, user_id)
+             redis_result = User.store_verification_code(redis_client, user_id)
              user['password'] = User.hash_password(password_result[0])
              User.register_account(
                  User(
@@ -82,15 +83,26 @@ def index():
                      accounts=[],
                      notes=[]
                 ))
+             email = {
+                 'email' :  email[0],
+                 'sender' : app.config['MAIL_USERNAME'],
+                 'password' : app.config['MAIL_PASSWORD'],
+                 'subject' : 'Guard Dog - E-mail verification',
+                 'server' : app.config['MAIL_SERVER'],
+                 'port' : app.config['MAIL_PORT'],
+                 'template' : render_template('email_verification.html', name=name, code=redis_result[0]['verification_code'])
+             }
+             Thread(name='email_verification', target=User.send_verification_code, args=(email,)).start()
              return redirect(url_for('verify_account'))
         elif user_response.status_code == 200:
             flash(account_status[0], 'error')
             return redirect(url_for('signin'))
     return render_template('home.html', title='Online Password Manager')
 
-@app.route('/account-verification')
+@app.route('/account-verification', methods=['GET', 'POST'])
 def verify_account():
-    pass
+    return render_template('account_verification.html')
+
 
 
 @app.route('/sign-up')

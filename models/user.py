@@ -6,6 +6,7 @@ import smtplib
 from email.message import EmailMessage
 from passlib.hash import pbkdf2_sha256
 
+
 class User(Frame):
     _fields = {
         'name',
@@ -87,11 +88,11 @@ class User(Frame):
             return 'Verification code or username is incorrect or your passcode has expired', 401
 
     @staticmethod
-    def send_verification_code(**mail_settings):
+    def send_verification_code(mail_settings):
         message = EmailMessage()
         message['to'] = mail_settings['email']
         message['from'] = mail_settings['sender']
-        message['subject'] = 'testing....'
+        message['subject'] = mail_settings['subject']
         message.set_content(mail_settings['template'], subtype='html')
         with smtplib.SMTP_SSL(mail_settings['server'], mail_settings['port']) as smtp:
             smtp.login(mail_settings['sender'], mail_settings['password'])
