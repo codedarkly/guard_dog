@@ -40,7 +40,8 @@ class User(Frame):
 
     @staticmethod
     def register_account(user):
-        if result :=  User.one(Q.email == user.email):
+        result =  User.one(Q.email == user.email)
+        if result is not None:
            return 'User exists', 409
         else:
            user.insert()
@@ -50,12 +51,18 @@ class User(Frame):
     def compare_passwords(password, confirm_password):
         return (password, 200) if password == confirm_password else ('Passwords do not match', 401)
 
-    def hash_password(self, password):
+    @staticmethod
+    def hash_password(password):
         return pbkdf2_sha256.hash(password)
 
     def verify_password(self,password,hashed_password):
         #get user from database and compare it against their enter password(use check_user_account())
         return pbkdf2_sha256.verify(password, hashed_password)
+
+    @staticmethod
+    def generate_password(length):
+        characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-&'
+        return ''.join(random.choice(characters) for _ in range(length))
 
     @classmethod
     def generate_verification_code(cls):
@@ -111,8 +118,3 @@ class User(Frame):
            return 'User account deactivated', 404
         except AttributeError:
            return 'User does not exist', 404
-
-    @staticmethod
-    def generate_password(length):
-        characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-&'
-        return ''.join(random.choice(characters) for _ in range(length))

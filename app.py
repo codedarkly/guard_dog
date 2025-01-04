@@ -46,7 +46,13 @@ def index():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm-password')
         password_result = User.compare_passwords(password, confirm_password)
-        user = {'name' : name[0], 'username' : username[0], 'email' : email[0], 'password' : password_result[0], 'status' : 'active'}
+        user = {
+            'name' : name[0],
+            'username' : username[0],
+            'email' : email[0],
+            'password' : password_result[0],
+            'status' : 'active'
+        }
         account_status = User.retrieve_user_account(**user)
         name_response = make_response(name)
         username_response = make_response(username)
@@ -64,6 +70,15 @@ def index():
         elif user_response.status_code == 404:
              user_id = session.sid
              User.store_verification_code(redis_client, user_id)
+             user['password'] = User.hash_password(password_result[0])
+             User.register_account(
+                 User(
+                     name=name[0],
+                     username=username[0],
+                     email=email[0],
+                     password=user['password'],
+                     status=user['status']
+                ))
              return redirect(url_for('verify_account'))
         elif user_response.status_code == 200:
             flash(account_status[0], 'error')
