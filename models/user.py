@@ -79,11 +79,12 @@ class User(Frame):
         result = rc.hgetall(user_data)
         return {k.decode():v.decode() for k,v in result.items()}, 200
 
-    def verify_verification_code(self, rc, **user):
+    @classmethod
+    def verify_verification_code(cls, rc, user_id):
         try:
-            result = rc.hgetall(user['username'])
+            result = rc.hgetall(user_id)
             data = {k.decode():v.decode() for k,v in result.items()}
-            return data['verification_code']
+            return (data['verification_code'], 200)
         except KeyError:
             return 'Verification code or username is incorrect or your passcode has expired', 401
 

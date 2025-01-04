@@ -103,7 +103,15 @@ def index():
 
 @app.route('/account-verification', methods=['GET', 'POST'])
 def verify_account():
-
+    verification_code = request.form.get('verification_code')
+    if request.method == 'POST' and verification_code != '':
+        verify_user = User.verify_verification_code(redis_client, f'user:{session.sid}')
+        verify_user_response =  make_response(verify_user)
+        if verify_user_response.status_code == 200:
+           if verification_code == verify_user[0]:
+               return redirect(url_for('account_manager'))
+        else:
+            flash(verify_user[0],'error')
     return render_template('account_verification.html')
 
 
@@ -150,7 +158,7 @@ def remove_note():
 
 @app.route('/account-manager')
 def account_manager():
-    pass
+    return render_template('accounts.html')
 
 @app.route('/account-manager/item/<id>')
 def get_item():

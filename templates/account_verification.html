@@ -5,14 +5,24 @@
        <li><a href="{{ url_for('index')}}">&lt;</a></li>
    </menu>
 </header>
-<div id="verification-container">
-    <div id="verification-container">
+<main>
+  <div id="verification-container">
+  <div id="verification-message">
        <h2>OTP Verification</h2>
       <p>We sent a verification code to your email please enter it below</p>
-   </div>
+   <div>
    <form method="POST">
-       <input type="text" name="verification_code" placeholder="XXXXXXXX" required>
+       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"
+       <input type="text" name="verification_code" placeholder="XXXXXXXX" required><br>
        <input type="submit" value="Send">
    </form>
+   {% with messages = get_flash_messages(with_categories=true) %}
+     {% if messages %}
+       {% for category, message in messages %}
+         <p class="flash-{{category}}">{{ message }}</p>
+        {% endfor %}
+     {% endif %}
+   {% endwith %}
 </div>
+</main>
 {% endblock %}
