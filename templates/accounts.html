@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% include 'sidebar.html' %} {% block content %}
+{% extends 'base.html' %} {% include 'partials/sidebar.html' %} {% block content %}
 <header>
     <menu>
         <li><a href="{{ url_for('signout') }}">Sign out</a></li>
@@ -8,8 +8,8 @@
     <div class="card">
         <div id="accounts">
             <h2>Accounts</h2>
-            < class="account-item">
-            <div class="item">
+            <div class="account-item">
+             <div class="item">
                 <p></p>
                 <sub></sub>
             </div>
