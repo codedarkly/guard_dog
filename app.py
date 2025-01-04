@@ -77,7 +77,10 @@ def index():
                      username=username[0],
                      email=email[0],
                      password=user['password'],
-                     status=user['status']
+                     date_added=datetime.datetime.utcnow(),
+                     status=user['status'],
+                     accounts=[],
+                     notes=[]
                 ))
              return redirect(url_for('verify_account'))
         elif user_response.status_code == 200:
