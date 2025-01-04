@@ -1,4 +1,4 @@
-from mongoframes import *
+from mongoframes import Frame, Q
 from datetime import datetime
 import random
 import re
@@ -17,13 +17,6 @@ class User(Frame):
         'accounts',
         'notes'
     }
-
-    def __init__(self, name, email, password, status):
-        self.name = name
-        self.email = email
-        self.password = password
-        self.status = status
-
 
     def is_user_signed_in(user_status):
         #check to see if user still has a session(make this a decorator)
@@ -64,13 +57,15 @@ class User(Frame):
         #get user from database and compare it against their enter password(use check_user_account())
         return pbkdf2_sha256.verify(password, hashed_password)
 
-    @staticmethod
-    def generate_verification_code():
-        return generate_password(8)
+    @classmethod
+    def generate_verification_code(cls):
+        return User.generate_password(8)
 
-    def store_verification_code(self, rc, user):
-        user['verification_code'] = generate_verification_code()
-        user_data = f'username:{user["username"]}'
+    @classmethod
+    def store_verification_code(cls, rc, user_id):
+        #store the generated verification code in the cache(temporarily)
+        user  = {'verification_code' : User.generate_verification_code()}
+        user_data = f'user:{user_id}'
         rc.hset(user_data, mapping=user)
         rc.expire(user_data, 900)
         result = rc.hgetall(user_data)
@@ -101,8 +96,9 @@ class User(Frame):
         user.update()
         return 'User account updated',204
 
-    def retrieve_user_account(self):
-        if _ := User.one({'email' : self.email, 'password' : self.password}):
+    @classmethod
+    def retrieve_user_account(cls, **user):
+        if u := User.one(Q.email == user['email']) is not None:
             return ('User exists', 200)
         else:
             return ('User does not exist', 404)

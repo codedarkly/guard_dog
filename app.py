@@ -46,8 +46,8 @@ def index():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm-password')
         password_result = User.compare_passwords(password, confirm_password)
-        user = User(name=name, email=email,password=password, status='active')
-        account_status = user.retrieve_user_account()
+        user = {'name' : name[0], 'username' : username[0], 'email' : email[0], 'password' : password_result[0], 'status' : 'active'}
+        account_status = User.retrieve_user_account(**user)
         name_response = make_response(name)
         username_response = make_response(username)
         email_response = make_response(email)
@@ -61,16 +61,18 @@ def index():
              flash(email[0], 'error')
         elif password_response.status_code == 401:
              flash(password_result[0], 'error')
-        if user_response.status_code == 404:
+        elif user_response.status_code == 404:
+             user_id = session.sid
+             User.store_verification_code(redis_client, user_id)
              return redirect(url_for('verify_account'))
-        else:
-             flash(account_status[0], 'error')
-
+        elif user_response.status_code == 200:
+            flash(account_status[0], 'error')
+            return redirect(url_for('signin'))
     return render_template('home.html', title='Online Password Manager')
 
 @app.route('/account-verification')
 def verify_account():
-    return 'verify account', 200
+    pass
 
 
 @app.route('/sign-up')
