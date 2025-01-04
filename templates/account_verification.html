@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<header>
+   <menu>
+       <li><a href="{{ url_for('index')}}">&lt;</a></li>
+   </menu>
+</header>
+<div id="verification-container">
+    <div id="verification-container">
+       <h2>OTP Verification</h2>
+      <p>We sent a verification code to your email please enter it below</p>
+   </div>
+   <form method="POST">
+       <input type="text" name="verification_code" placeholder="XXXXXXXX" required>
+       <input type="submit" value="Send">
+   </form>
+</div>
+{% endblock %}

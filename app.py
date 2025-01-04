@@ -14,6 +14,7 @@ from flask_redis import FlaskRedis
 from flask_apscheduler import APScheduler
 from flask_session import Session
 from threading import Thread
+from flask_wtf import CSRFProtect
 
 load_dotenv('.env')
 
@@ -37,6 +38,7 @@ Frame._client = MongoClient(app.config['MONGO_URI'])
 redis_client = FlaskRedis(app)
 scheduler = APScheduler()
 fk_session = Session(app)
+csrf = CSRFProtect(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -101,6 +103,7 @@ def index():
 
 @app.route('/account-verification', methods=['GET', 'POST'])
 def verify_account():
+
     return render_template('account_verification.html')
 
 
