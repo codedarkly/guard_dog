@@ -114,11 +114,9 @@ def verify_account():
             flash(verify_user[0],'error')
     return render_template('account_verification.html')
 
-
-
 @app.route('/sign-up')
 def signup():
-    return render_template('signup.html', title='Sign up')
+    return render_template('home.html', title='Sign up')
 
 @app.route('/sign-in')
 def signin():
@@ -126,6 +124,28 @@ def signin():
 
 @app.route('/sign-out')
 def signout():
+    session.clear()
+    return render_template('signout.html')
+
+@app.route('/account-manager')
+def account_manager():
+    #check session id to see if they are logged in on every route
+    return render_template('accounts.html')
+
+@app.route('/account-manager/item/<id>')
+def get_item():
+    pass
+
+@app.route('/account-manager/add-item')
+def add_item():
+    pass
+
+@app.route('/account-manager/edit-item/<id>')
+def edit_item(id):
+    pass
+
+@app.route('/account-manager/remove-item/<id>')
+def delete_item(id):
     pass
 
 @app.route('/settings')
@@ -156,25 +176,6 @@ def edit_note():
 def remove_note():
     pass
 
-@app.route('/account-manager')
-def account_manager():
-    return render_template('accounts.html')
-
-@app.route('/account-manager/item/<id>')
-def get_item():
-    pass
-
-@app.route('/account-manager/add-item')
-def add_item():
-    pass
-
-@app.route('/account-manager/edit-item/<id>')
-def edit_item(id):
-    pass
-
-@app.route('/account-manager/remove-item/<id>')
-def delete_item(id):
-    pass
 
 
 if __name__ == '__main__':
