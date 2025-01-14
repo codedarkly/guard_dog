@@ -5,7 +5,7 @@ import re
 import smtplib
 from email.message import EmailMessage
 from passlib.hash import pbkdf2_sha256
-
+from enum import Enum
 
 class User(Frame):
     _fields = {
@@ -66,9 +66,10 @@ class User(Frame):
             return ('Password is incorrect', 401)
 
     @staticmethod
-    def generate_password(length):
-        characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-&'
-        return ''.join(random.choice(characters) for _ in range(length))
+    def generate_password(length, character_type):
+        for character in (CharacterTypes):
+            if character.name in character_type:
+                return ''.join(random.choice(character.value) for _ in range(length))
 
     @classmethod
     def generate_verification_code(cls):
@@ -134,3 +135,10 @@ class User(Frame):
            return 'User account deactivated', 404
         except AttributeError:
            return 'User does not exist', 404
+
+
+class CharacterTypes(Enum):
+    ALPHANUMERIC = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    NUMBERS = '0123456789'
+    STRONG = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-&@$%*!(+)*'

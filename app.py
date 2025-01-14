@@ -180,8 +180,17 @@ def delete_item(id):
 def settings():
     pass
 
-@app.route('/password-generator')
+@app.route('/password-generator', methods=['GET', 'POST'])
 def password_generator():
+    #make sure number is not negative
+    password_length = request.form.get('password-length')
+    character_type = request.form.get('character-type')
+    if request.method == 'POST' and password_length != ''and  character_type != '':
+        if password_length.isnumeric() and int(password_length) < 48:
+            password = User.generate_password(int(password_length), character_type.upper())
+            return render_template('password_generator.html', user_password=password)
+        else:
+           flash('Password length must be numbers and no longer than 48 characters', 'error')
     return render_template('password_generator.html')
 
 @app.route('/notes')
