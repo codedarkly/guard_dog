@@ -28,7 +28,8 @@ class User(Frame):
 
     @staticmethod
     def validate_name(name):
-        return (name, 200) if re.match('^[a-zA-Z\s]+$', name) else ('Name is invalid', 401)
+        pattern = r'^[A-Za-z]+(?:\s+[A-Za-z]+)*$'
+        return (name, 200) if re.match(pattern, name) else ('Name is invalid', 401)
 
     @staticmethod
     def validate_username(username):
@@ -58,7 +59,11 @@ class User(Frame):
 
     def verify_password(self,password,hashed_password):
         #get user from database and compare it against their enter password(use check_user_account())
-        return pbkdf2_sha256.verify(password, hashed_password)
+        password_result = pbkdf2_sha256.verify(password, hashed_password)
+        if password_result:
+            return ('Password matches', 200)
+        else:
+            return ('Password is incorrect', 401)
 
     @staticmethod
     def generate_password(length):
@@ -106,11 +111,20 @@ class User(Frame):
         return 'User account updated',204
 
     @classmethod
-    def retrieve_user_account(cls, **user):
-        if u := User.one(Q.email == user['email']) is not None:
+    def check_for_account(cls, **user):
+        if _ := User.one(Q.email == user['email']) is not None:
             return ('User exists', 200)
         else:
             return ('User does not exist', 404)
+
+    @classmethod
+    def retrieve_user_account(cls, email):
+        user = User.one(Q.email == email)
+        if user is not None:
+            return user
+        else:
+            return ('User does not exist', 404)
+
 
     def deactivate_account(user):
         try:

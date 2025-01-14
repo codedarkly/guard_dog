@@ -29,24 +29,45 @@
     </div>
     <div class="content">
         <main>
-            <form method="post" action="/sign-in">
+            <form method="post">
                 <h2>Sign in</h2>
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                />
                 <input
                     type="email"
                     name="email"
                     placeholder="E-mail"
                     pattern="^[a-z0-9_%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                     required
-                />
+                /><br />
                 <input
                     type="password"
                     name="password"
                     placeholder="Password"
                     required
+                /><br />
+                <button type="submit" formaction="/sign-in">Sign in</button>
+            </form>
+            <form>
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
                 />
-                <input type="button" name="signup" value="Sign up" />
-                <input type="button" name="signin" value="Sign in" />
+                <button type="submit" formmethod="post" formaction="/sign-up">
+                    Sign up
+                </button>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flashes">
+                    {% for category, message in messages %}
+                    <span class="flash-{{category}}">{{ message }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %} {% endwith %}
             </form>
         </main>
     </div>

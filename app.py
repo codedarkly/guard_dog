@@ -34,6 +34,8 @@ app.config['SESSION_TYPE'] = os.environ.get('SESSION_TYPE')
 app.config['SESSION_PERMANENT'] = os.environ.get('SESSION_PERMANENT')
 app.config['SESSION_USE_SIGNER'] = os.environ.get('SESSION_USE_SIGNER')
 app.config['SESSION_REDIS'] = os.environ.get('REDIS_URL')
+
+
 Frame._client = MongoClient(app.config['MONGO_URI'])
 redis_client = FlaskRedis(app)
 scheduler = APScheduler()
@@ -56,7 +58,7 @@ def index():
             'password' : password_result[0],
             'status' : 'active'
         }
-        account_status = User.retrieve_user_account(**user)
+        account_status = User.check_for_account(**user)
         name_response = make_response(name)
         username_response = make_response(username)
         email_response = make_response(email)
@@ -92,7 +94,7 @@ def index():
                  'subject' : 'Guard Dog - E-mail verification',
                  'server' : app.config['MAIL_SERVER'],
                  'port' : app.config['MAIL_PORT'],
-                 'template' : render_template('email_verification.html', name=name, code=redis_result[0]['verification_code'])
+                 'template' : render_template('email_verification.html', name=name[0], code=redis_result[0]['verification_code'])
              }
              Thread(name='email_verification', target=User.send_verification_code, args=(email,)).start()
              return redirect(url_for('verify_account'))
@@ -114,12 +116,38 @@ def verify_account():
             flash(verify_user[0],'error')
     return render_template('account_verification.html')
 
-@app.route('/sign-up')
+@app.route('/sign-up', methods=['GET', 'POST'])
 def signup():
     return render_template('home.html', title='Sign up')
 
-@app.route('/sign-in')
+@app.route('/sign-in', methods=['GET', 'POST'])
 def signin():
+    if request.method == 'POST':
+        email = User.validate_email(request.form.get('email'))
+        email_response = make_response(email)
+        if email_response.status_code == 200:
+            user = User()
+            result = User.retrieve_user_account(email[0])
+            password_result = user.verify_password(request.form.get('password'), result['password'])
+            password_response = make_response(password_result)
+            if password_response.status_code == 200:
+                user_id = session.sid
+                redis_result = User.store_verification_code(redis_client, user_id)
+                email = {
+                    'email' :  email[0],
+                    'sender' : app.config['MAIL_USERNAME'],
+                    'password' : app.config['MAIL_PASSWORD'],
+                    'subject' : 'Guard Dog - E-mail verification',
+                    'server' : app.config['MAIL_SERVER'],
+                    'port' : app.config['MAIL_PORT'],
+                    'template' : render_template('email_verification.html', name=result.name, code=redis_result[0]['verification_code'])
+                }
+                Thread(name='email_verification', target=User.send_verification_code, args=(email,)).start()
+                return redirect(url_for('verify_account'))
+            else:
+                flash(password_result[0], 'error')
+        else:
+           flash(email[0], 'error')
     return render_template('signin.html', title='Sign in')
 
 @app.route('/sign-out')
@@ -175,6 +203,9 @@ def edit_note():
 @app.route('/notes/remove-item/<id>')
 def remove_note():
     pass
+
+
+
 
 
 
