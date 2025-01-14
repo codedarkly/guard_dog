@@ -13,7 +13,7 @@
    <div>
    <form method="POST">
        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-       <input type="text" name="verification_code" placeholder="XXXXXXXX" required><br>
+       <input type="password" name="verification_code" placeholder="XXXXXXXX" required><br>
        <input type="submit" value="Send">
    </form>
    {% with messages = get_flashed_messages(with_categories=true) %}

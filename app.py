@@ -182,7 +182,7 @@ def settings():
 
 @app.route('/password-generator')
 def password_generator():
-    pass
+    return render_template('password_generator.html')
 
 @app.route('/notes')
 def notes():
