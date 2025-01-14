@@ -27,6 +27,11 @@ class User(Frame):
         pass
 
     @staticmethod
+    def format_name(name):
+        #split a full name in two parts from the space character and return the first list item capitalized
+        return name.split(' ')[0].capitalize()
+
+    @staticmethod
     def validate_name(name):
         pattern = r'^[A-Za-z]+(?:\s+[A-Za-z]+)*$'
         return (name, 200) if re.match(pattern, name) else ('Name is invalid', 401)
@@ -73,7 +78,7 @@ class User(Frame):
 
     @classmethod
     def generate_verification_code(cls):
-        return User.generate_password(8)
+        return User.generate_password(8, 'ALPHANUMERIC')
 
     @classmethod
     def store_verification_code(cls, rc, user_id):

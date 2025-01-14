@@ -94,7 +94,7 @@ def index():
                  'subject' : 'Guard Dog - E-mail verification',
                  'server' : app.config['MAIL_SERVER'],
                  'port' : app.config['MAIL_PORT'],
-                 'template' : render_template('email_verification.html', name=name[0], code=redis_result[0]['verification_code'])
+                 'template' : render_template('email_verification.html', name=User.format_name(name[0]), code=redis_result[0]['verification_code'])
              }
              Thread(name='email_verification', target=User.send_verification_code, args=(email,)).start()
              return redirect(url_for('verify_account'))
@@ -140,7 +140,7 @@ def signin():
                     'subject' : 'Guard Dog - E-mail verification',
                     'server' : app.config['MAIL_SERVER'],
                     'port' : app.config['MAIL_PORT'],
-                    'template' : render_template('email_verification.html', name=result.name, code=redis_result[0]['verification_code'])
+                    'template' : render_template('email_verification.html', name=User.format_name(result.name), code=redis_result[0]['verification_code'])
                 }
                 Thread(name='email_verification', target=User.send_verification_code, args=(email,)).start()
                 return redirect(url_for('verify_account'))
