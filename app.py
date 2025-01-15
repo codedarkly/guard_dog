@@ -155,10 +155,20 @@ def signout():
     session.clear()
     return render_template('signout.html')
 
-@app.route('/account-manager')
+@app.route('/timed-out')
+def timeout():
+    return 'You\'ve been timed out', 200
+
+
+@app.route('/account-manager', methods=['GET'])
 def account_manager():
     #check session id to see if they are logged in on every route
-    return render_template('accounts.html')
+    session_result = User.check_session_status(redis_client, session.sid)
+    if session_result and request.method == 'GET':
+        return render_template('accounts.html'), 200
+    else:
+        return redirect(url_for('timeout')), 301
+
 
 @app.route('/account-manager/item/<id>')
 def get_item():
@@ -166,7 +176,7 @@ def get_item():
 
 @app.route('/account-manager/add-item')
 def add_item():
-    pass
+    return render_template('account.html')
 
 @app.route('/account-manager/edit-item/<id>')
 def edit_item(id):
@@ -185,7 +195,7 @@ def password_generator():
     #make sure number is not negative
     password_length = request.form.get('password-length')
     character_type = request.form.get('character-type')
-    if request.method == 'POST' and password_length != ''and  character_type != '':
+    if request.method == 'POST' and password_length != '' and  character_type != '':
         if password_length.isnumeric() and int(password_length) < 48:
             password = User.generate_password(int(password_length), character_type.upper())
             return render_template('password_generator.html', user_password=password)

@@ -141,6 +141,14 @@ class User(Frame):
         except AttributeError:
            return 'User does not exist', 404
 
+    @staticmethod
+    def check_session_status(rc, id):
+        if user_session := rc.get(f'session:{id}') is not None:
+            return True
+
+    def expire_session(id):
+        pass
+
 
 class CharacterTypes(Enum):
     ALPHANUMERIC = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
