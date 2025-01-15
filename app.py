@@ -187,7 +187,13 @@ def add_item():
 
 @app.route('/account-manager/edit/<id>')
 def edit_item(id):
-    return render_template('edit.html')
+    if 'user_id' in session and request.method == 'GET':
+        user_id = session['user_id']
+        user = User.by_id(ObjectId(user_id))
+        account = Account.retrieve_account(user, id)
+        return render_template('edit.html', account=account[0]), 200
+    else:
+        return redirect(url_for('timeout')), 301
 
 @app.route('/account-manager/remove/<id>')
 def delete_item(id):

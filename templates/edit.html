@@ -11,37 +11,37 @@
         <form method="POST">
             <h2>Account</h2>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="text" name="account" placeholder="Name" value="{{ item['name']}}" required><br>
+            <input type="text" name="account" placeholder="Name" value="{{ account['name']}}" required><br>
             <select name="category" id="category">
                 {% set category_items = (['Bill', 'Personal', 'Education', 'Entertainment',]) %}
                 {% for category in category_items %}
-                    {% if category == item['category'] %}
-                    <option value="{{ item['category']}}" selected>{{ item['category'] }}</option>
+                    {% if category == account['category'] %}
+                    <option value="{{ account['category']}}" selected>{{ account['category'] }}</option>
                     {% else %}
-                    <option value="{{ category}}">{{ category }}</option>
+                    <option value="{{ category }}">{{ category }}</option>
                     {% endif %}
                 {% endfor %}
             </select>
-            <input type="email" name="email" placeholder="E-mail" value="{{ item['email']}}" required><br>
-            <input type="password" name="password" placeholder="Account password" value="{{ item['password']}}" required><br>
-            {% if  item['category'] == 'Bill' %}
-                <input type="text" name="amount" placeholder="Amount" value="{{ item['amount']}}" required><br>
-                <input type="date" name="due-date" placeholder="Due date" value="{{ item['due_date']}}" required><br>
+            <input type="email" name="email" placeholder="E-mail" value="{{ account['email']}}" required><br>
+            <input type="password" name="password" placeholder="Account password" value="{{ account['password']}}" required><br>
+            {% if  account['category'] == 'Bill' %}
+                <input type="text" name="amount" placeholder="Amount" value="{{ account['amount']}}" required><br>
+                <input type="date" name="due-date" placeholder="Due date" value="{{ account['due_date']}}" required><br>
                 <select name="priority" id="priority">
                     {% set priorities = (['High', 'Medium', 'Low']) %}
                     {% for priority in priorities %}
-                    {% if priority == item['priority'] %}
-                        <option value="{{ item['priority']}}" selected>{{ item['priority'] }}</option>
+                    {% if priority == account['priority'] %}
+                        <option value="{{ account['priority']}}" selected>{{ account['priority'] }}</option>
                     {% else %}
                         <option value="{{ priority }}">{{ priority }}</option>
                     {% endif %}
                     {% endfor %}
                 </select>
                 <div id="autopay">
-                <div id="autopay-switcher" data-value="{% if item['autopay'] ==  False %} 0 {% else %} 1 {% endif %}"></div>
+                <div id="autopay-switcher" data-value="{% if account['autopay']  %} 1 {% else %} 0 {% endif %}"></div>
                 </div>
             {% endif %}
-            <textarea name="note" placeholder="Account note" value="{{ item['account_note'] }}"></textarea><br>
+            <textarea name="note" placeholder="Account note">{{ account['account_note'] }}</textarea><br>
             <input type="submit" value="Add account">
         </form>
     </div>
