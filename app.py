@@ -162,11 +162,8 @@ def signout():
 def timeout():
     return 'You\'ve been timed out', 200
 
-
 @app.route('/account-manager', methods=['GET'])
 def account_manager():
-    #check session id to see if they are logged in on every route
-    #session_result = User.check_session_status(redis_client, session.sid)
     if 'user_id' in session and request.method == 'GET':
         user_id = session['user_id']
         user = User.by_id(ObjectId(user_id))
@@ -174,10 +171,15 @@ def account_manager():
     else:
         return redirect(url_for('timeout')), 301
 
-
 @app.route('/account-manager/item/<id>', methods=['GET', 'POST'])
 def get_item(id):
-    return render_template('account.html')
+    if 'user_id' in session and request.method == 'GET':
+        user_id = session['user_id']
+        user = User.by_id(ObjectId(user_id))
+        account = Account.retrieve_account(user, id)
+        return render_template('account.html', account=account[0]), 200
+    else:
+        return redirect(url_for('timeout')), 301
 
 @app.route('/account-manager/add-item')
 def add_item():

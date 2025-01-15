@@ -7,8 +7,26 @@
    </menu>
 </header>
 <main>
+  <div class="card">
     <div class="account">
-
+        <h2>Account</h2>
+        <div class="account-item">
+            <p>Name: {{ account['name'] }}</p>
+            <p>Date added: {{ account['date_added'] }}</p>
+            <p>E-mail: {{ account['email'] }}</p>
+            <p>Password: {{ account['password'] }}</p>
+            {% if account['category'] == 'Bill' %}
+                <p>Category: {{ account['category'] }}</p>
+                <p>Amount: {{ account['amount'] }}</p>
+                <p>Due date: {{ account['due_date'] }}</p>
+                <p>Priority: {{ account['priority'] }}</p>
+                <p>Autopay: {% if account['autopay'] %} Yes {% else %} No {% endif %}</p>
+                <p>Category: {{ account['category'] }}</p>
+            {% else %}
+              <p>Category: {{ account['category'] }}</p>
+            {% endif %}
+        </div>
     </div>
+  </div>
 </main>
 {% endblock %}
