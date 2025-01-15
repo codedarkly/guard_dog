@@ -9,14 +9,16 @@
         <div id="accounts">
             <h2>Accounts</h2>
             <div class="account-item">
+            {% for account in accounts %}
              <div class="item">
-                <p></p>
-                <sub></sub>
+                <p><a href="{{ url_for('get_item', id=account['id']) }}">{{ account['name'] }}</a></p>
+                <sub>{{ account['category'] }}</sub>
             </div>
             <menu>
-                <li><a href="">Update</a></li>
-                <li><a href="">Remove</a></li>
+                <li><a href="{{ url_for('edit_item', id=account['id'])}}">Update</a></li>
+                <li><a href="{{ url_for('delete_item', id=account['id'])}}">Remove</a></li>
             </menu>
+            {% endfor %}
         </div>
         <div class="add-item">
             <a href="{{ url_for('add_note') }}">Add Item</a>

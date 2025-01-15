@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'partials/sidebar.html' %}
+<header>
+   <menu>
+       <li><a href="{{ url_for('signout')}}">sign out</a></li>
+   </menu>
+</header>
+<main>
+    <div class="account">
+        <form method="POST">
+            <h2>Account</h2>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="account" placeholder="Name" required><br>
+            <select name="category" id="category">
+                <option value="Bill">Bill</option>
+                <option value="Personal">Personal</option>
+                <option value="Education">Education</option>
+                <option value="Entertainment">Entertainment</option>
+            </select>
+            <input type="email" name="email" placeholder="E-mail" required><br>
+            <input type="password" name="password" placeholder="Account password" required><br>
+            <div id="additional-items"></div>
+            <textarea name="note" placeholder="Account note"></textarea><br>
+            <input type="submit" value="Add account" id="accountSubmit">
+        </form>
+    </div>
+</main>
+{% endblock %}

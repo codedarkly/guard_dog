@@ -7,68 +7,8 @@
    </menu>
 </header>
 <main>
-    <div id="account">
-      {% if url_for(request.endpoint) == '/account-manager/add-item' %}
-        <form method="POST">
-            <h2>Account</h2>
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="text" name="account" placeholder="Name" required><br>
-            <select name="category" id="category">
-                <option value="Bill">Bill</option>
-                <option value="Personal">Personal</option>
-                <option value="Education">Education</option>
-                <option value="Entertainment">Entertainment</option>
-            </select>
-            <input type="email" name="email" placeholder="E-mail" required><br>
-            <input type="password" name="password" placeholder="Account password" required><br>
-            <div id="additional-items"></div>
-            <textarea name="note" placeholder="Account note"></textarea><br>
-            <input type="submit" value="Add account" id="accountSubmit">
-        </form>
-      {% endif %}
+    <div class="account">
 
-      {% if items %}
-          {% for item in items %}
-            {% if request.path == url_for('/account-manager/edit-item/item') %}
-            <form method="POST">
-                <h2>Account</h2>
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="text" name="account" placeholder="Name" value="{{ item['name']}}" required><br>
-                <select name="category" id="category">
-                    {% set category_items = (['Bill', 'Personal', 'Education', 'Entertainment',]) %}
-                    {% for category in category_items %}
-                       {% if category == item['category'] %}
-                         <option value="{{ item['category']}}" selected>{{ item['category'] }}</option>
-                       {% else %}
-                         <option value="{{ category}}">{{ category }}</option>
-                       {% endif %}
-                    {% endfor %}
-                </select>
-                <input type="email" name="email" placeholder="E-mail" value="{{ item['email']}}" required><br>
-                <input type="password" name="password" placeholder="Account password" value="{{ item['password']}}" required><br>
-                {% if item['category'] == 'Bill' %}
-                   <input type="text" name="amount" placeholder="Amount" value="{{ item['amount']}}" required><br>
-                   <input type="date" name="due-date" placeholder="Due date" value="{{ item['due_date']}}" required><br>
-                   <select name="priority" id="priority">
-                       {% set priorities = (['High', 'Medium', 'Low']) %}
-                       {% for priority in priorities %}
-                          {% if priority == item['priority'] %}
-                            <option value="{{ item['priority']}}" selected>{{ item['priority'] }}</option>
-                          {% else %}
-                            <option value="{{ priority }}">{{ priority }}</option>
-                          {% endif %}
-                       {% endfor %}
-                   </select>
-                   <div id="autopay">
-                     <div id="autopay-switcher" data-value="{% if item['autopay'] ==  False %} 0 {% else %} 1 {% endif %}"></div>
-                   </div>
-                {% endif %}
-                <textarea name="note" placeholder="Account note" value="{{ item['account_note'] }}"></textarea><br>
-                <input type="submit" value="Add account">
-            </form>
-           {% endif %}
-         {% endfor %}
-      {% endif %}
     </div>
 </main>
 {% endblock %}

@@ -22,6 +22,7 @@ class Account(SubFrame):
         data.update()
         return 'Account updated', 200
 
+    @staticmethod
     def retrieve_account(user, id):
         try:
            return [account for account in user.accounts if id in account['id']]

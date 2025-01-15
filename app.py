@@ -15,6 +15,7 @@ from flask_apscheduler import APScheduler
 from flask_session import Session
 from threading import Thread
 from flask_wtf import CSRFProtect
+from bson.objectid import ObjectId
 
 load_dotenv('.env')
 
@@ -128,6 +129,8 @@ def signin():
         if email_response.status_code == 200:
             user = User()
             result = User.retrieve_user_account(email[0])
+            user_id = ObjectId(result['_id'])
+            session['user_id'] = str(user_id)
             password_result = user.verify_password(request.form.get('password'), result['password'])
             password_response = make_response(password_result)
             if password_response.status_code == 200:
@@ -163,26 +166,28 @@ def timeout():
 @app.route('/account-manager', methods=['GET'])
 def account_manager():
     #check session id to see if they are logged in on every route
-    session_result = User.check_session_status(redis_client, session.sid)
-    if session_result and request.method == 'GET':
-        return render_template('accounts.html'), 200
+    #session_result = User.check_session_status(redis_client, session.sid)
+    if 'user_id' in session and request.method == 'GET':
+        user_id = session['user_id']
+        user = User.by_id(ObjectId(user_id))
+        return render_template('accounts.html', accounts=user.accounts), 200
     else:
         return redirect(url_for('timeout')), 301
 
 
-@app.route('/account-manager/item/<id>')
-def get_item():
-    pass
+@app.route('/account-manager/item/<id>', methods=['GET', 'POST'])
+def get_item(id):
+    return render_template('account.html')
 
 @app.route('/account-manager/add-item')
 def add_item():
-    return render_template('account.html')
+    return render_template('add.html')
 
-@app.route('/account-manager/edit-item/<id>')
+@app.route('/account-manager/edit/<id>')
 def edit_item(id):
-    pass
+    return render_template('edit.html')
 
-@app.route('/account-manager/remove-item/<id>')
+@app.route('/account-manager/remove/<id>')
 def delete_item(id):
     pass
 
